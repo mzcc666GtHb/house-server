@@ -9,4 +9,8 @@ router.post('/users/register', ctrls.UserController.register);
 router.get('/users', ctrls.UserController.users);
 router.get('/users/:id', ctrls.UserController.detail);
 
+//图片上传
+
+router.post('/file/upload', ctrls.FileController.uploadFile)
+
 export default router;
