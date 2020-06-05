@@ -5,10 +5,16 @@ import routes from './server/routes';
 import middleware from './server/middleware'
 
 const app = new Koa();
+//支持跨域访问优先调用
 app.use(cors());
+
+//解析post请求的body'
 app.use(koaBody({
+    //支持文件上传
     multipart:true
 }));
+
+//统一返回数据结构
 app.use(middleware.resFormat());
 
 app.use(routes.routes(),routes.allowedMethods());
