@@ -9,14 +9,17 @@ module.exports = {
         'Atomics': 'readonly',
         'SharedArrayBuffer': 'readonly'
     },
-    'parser': 'babel-eslint',//解析器，这里我们使用babel-eslint
+    'parserOptions': {
+        'sourceType': 'module',
+        'parser': 'babel-eslint'
+    },
     'rules': {
+        'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
+        'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
         'comma-dangle': ['error', 'never'], //是否允许对象中出现结尾逗号
         'no-cond-assign': 2, //条件语句的条件中不允许出现赋值运算符
-        'no-console': 2, //不允许出现console语句
         'no-constant-condition': 2, //条件语句的条件中不允许出现恒定不变的量
         'no-control-regex': 2, //正则表达式中不允许出现控制字符
-        'no-debugger': 2, //不允许出现debugger语句
         'no-dupe-args': 2, //函数定义的时候不允许出现重复的参数
         'no-dupe-keys': 2, //对象中不允许出现重复的键
         'no-duplicate-case': 2, //switch语句中不允许出现重复的case标签
