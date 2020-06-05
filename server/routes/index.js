@@ -11,6 +11,6 @@ router.get('/users/:id', ctrls.UserController.detail);
 
 //图片上传
 
-router.post('/file/upload', ctrls.FileController.uploadFile)
+router.post('/file/upload', ctrls.FileController.uploadFile);
 
 export default router;
