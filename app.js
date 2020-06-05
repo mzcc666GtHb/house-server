@@ -7,8 +7,7 @@ import middleware from './server/middleware'
 const app = new Koa();
 app.use(cors());
 app.use(koaBody({
-    multipart:true, // 支持文件上传
-    encoding:'gzip'
+    multipart:true
 }));
 app.use(middleware.resFormat());
 
