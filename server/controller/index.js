@@ -3,4 +3,4 @@ import FileController from './modules/file-controller';
 export default {
     UserController,
     FileController
-}
+};

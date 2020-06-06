@@ -1,6 +1,11 @@
 //自定义中间件
-/*
- *配置统一返回格式
+import jwt from 'jsonwebtoken';
+import {jwtConfig} from "../config";
+
+/**
+ * 统一返回数据格式
+ * @param option
+ * @return {function(...[*]=)}
  */
 const resFormat = (option = {}) => {
     return async (ctx, next) => {
@@ -23,10 +28,38 @@ const resFormat = (option = {}) => {
             };
         };
 
-      await next();
+        await next();
     };
 };
 
+/**
+ * 校验权限
+ * @return {Promise<void>}
+ */
+const jwtVerify = () => {
+    const verify = (ctx) => {
+        return new Promise((resolve, reject) => {
+            jwt.verify(ctx.request.header.token, jwtConfig.secret, async (err, decoded) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    decoded.id ? resolve( decoded) : resolve(null);
+                }
+            })
+        })
+    }
+    return async (ctx, next) => {
+        const  userInfo = await  verify(ctx);
+        if(userInfo) {
+            ctx.request.body.id = userInfo.id;
+            await next();
+        }else{
+            ctx.fail('无效token');
+        }
+    }
+
+}
 export default {
-    resFormat
+    resFormat,
+    jwtVerify
 };

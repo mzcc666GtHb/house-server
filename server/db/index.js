@@ -8,9 +8,9 @@ const query = (sql, values) => {
             if (err) {
                 reject(err);
             } else {
-                connection.query(sql, values, (err, rows) => {
-                    if (err) {
-                        reject(err);
+                connection.query(sql, values, (error, rows) => {
+                    if (error) {
+                        reject(error);
                     } else {
                         resolve(rows);
                     }
@@ -19,6 +19,6 @@ const query = (sql, values) => {
             }
         });
     });
-}
+};
 
 export default query;

@@ -15,3 +15,8 @@ export const qiniuConfig = {
     bucket: 'caijiuzone',
     origin: 'http://q9ycr4gxt.bkt.clouddn.com/'
 };
+
+export const jwtConfig = {
+    secret: 'house',
+    expiresIn: '2h'
+};

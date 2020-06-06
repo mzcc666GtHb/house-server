@@ -4,10 +4,10 @@ const router = koaRouter({
 });
 import ctrls from '../controller/index';
 //user模块
-router.post('/users/login', ctrls.UserController.login);
-router.post('/users/register', ctrls.UserController.register);
-router.get('/users', ctrls.UserController.users);
-router.get('/users/:id', ctrls.UserController.detail);
+router.post('/user/login', ctrls.UserController.login);
+router.post('/user/register', ctrls.UserController.register);
+router.get('/user/list', ctrls.UserController.userList);
+router.get('/user/detail', ctrls.UserController.userDetail);
 
 //图片上传
 

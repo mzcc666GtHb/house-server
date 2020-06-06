@@ -1,6 +1,7 @@
 import qiniu from 'qiniu';
 import bcrypt from 'bcryptjs';
-import {qiniuConfig} from '../config';
+import {qiniuConfig,jwtConfig} from '../config';
+import jwt from 'jsonwebtoken';
 class Utils {
     /**
      * 加密 循环10次
