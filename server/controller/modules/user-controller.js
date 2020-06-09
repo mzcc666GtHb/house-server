@@ -52,9 +52,14 @@ class UserController {
         const data = ctx.request.body;
         const user_id = data.id;
         const res = await query('SELECT id, user_name, user_email,user_pic FROM `user` where `id` = ?',[user_id]);
-        ctx.success({
-            data: res[0]
-        });
+        if(res.length) {
+            ctx.success({
+                data: res[0]
+            });
+        }else{
+            ctx.fail();
+        }
+
     }
 }
 

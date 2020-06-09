@@ -15,6 +15,14 @@ export const qiniuConfig = {
     bucket: 'caijiuzone',
     origin: 'http://q9ycr4gxt.bkt.clouddn.com/'
 };
+//腾讯云存储 COS配置
+export const cosConfig = {
+    secretId: 'AKID9FFdlbZo7ACzcK6240m69gy2rTtDug5F',
+    secretKey: 'MZdVGntuj299XhjV0GGzUp6Wgbx3vdpx',
+    bucket: 'caijiu-1259796406',
+    origin: 'https://caijiu-1259796406.cos.ap-nanjing.myqcloud.com',
+    region: 'ap-nanjing'
+};
 
 export const jwtConfig = {
     secret: 'house',

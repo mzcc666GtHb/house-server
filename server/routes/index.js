@@ -1,16 +1,50 @@
 import koaRouter from 'koa-router';
+
 const router = koaRouter({
     prefix: '/api'
 });
 import ctrls from '../controller/index';
 //user模块
-router.post('/user/login', ctrls.UserController.login);
-router.post('/user/register', ctrls.UserController.register);
-router.get('/user/list', ctrls.UserController.userList);
-router.get('/user/detail', ctrls.UserController.userDetail);
+const userRoutes = [
+    {
+        path: '/user/login',
+        method: 'post',
+        controller: ctrls.UserController.login
+    },
+    {
+        path: '/user/register',
+        method: 'post',
+        controller: ctrls.UserController.register
+    },
+    {
+        path: '/user/list',
+        method: 'get',
+        controller: ctrls.UserController.userList,
+        verify: true
+    },
+    {
+        path: '/user/detail',
+        method: 'get',
+        controller: ctrls.UserController.userDetail,
+        verify: true
+    },
+    //图片上传
+    {
+        path: '/file/upload',
+        method: 'post',
+        controller: ctrls.FileController.uploadFile,
+        verify: true
+    }
+];
 
-//图片上传
+const routes = [...userRoutes];
 
-router.post('/file/upload', ctrls.FileController.uploadFile);
+routes.forEach(item =>{
+    router[item.method](item.path, item.controller);
+});
 
-export default router;
+
+export default {
+    router,
+    routes
+};

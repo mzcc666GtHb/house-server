@@ -36,7 +36,7 @@ const resFormat = (option = {}) => {
  * 校验权限
  * @return {Promise<void>}
  */
-const jwtVerify = () => {
+const jwtVerify = (routes = []) => {
     const verify = (ctx) => {
         return new Promise((resolve, reject) => {
             jwt.verify(ctx.request.header.token, jwtConfig.secret, async (err, decoded) => {
@@ -49,13 +49,21 @@ const jwtVerify = () => {
         })
     }
     return async (ctx, next) => {
-        const  userInfo = await  verify(ctx);
-        if(userInfo) {
-            ctx.request.body.id = userInfo.id;
-            await next();
+        const originalUrl = ctx.originalUrl;
+        const verifyRoutes = routes.filter(item => item.verify);
+        const verifyPaths  = verifyRoutes.map(item => '/api' + item.path);
+        if(verifyPaths.includes(originalUrl)) {
+            const  userInfo = await  verify(ctx);
+            if(userInfo) {
+                ctx.request.body.id = userInfo.id;
+                await next();
+            }else{
+                ctx.fail('无效token');
+            }
         }else{
-            ctx.fail('无效token');
+            await next();
         }
+
     }
 
 }

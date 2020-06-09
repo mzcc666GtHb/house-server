@@ -1,7 +1,9 @@
 import qiniu from 'qiniu';
+import COS from 'cos-nodejs-sdk-v5';
 import bcrypt from 'bcryptjs';
-import {qiniuConfig,jwtConfig} from '../config';
+import {qiniuConfig, jwtConfig, cosConfig} from '../config';
 import jwt from 'jsonwebtoken';
+
 class Utils {
     /**
      * 加密 循环10次
@@ -30,7 +32,7 @@ class Utils {
      * @param {*} key
      * @return {*} promise 图片路径
      */
-    static upload(filePath, key) {
+    static uploadQiniu(filePath, key) {
         const accessKey = qiniuConfig.accessKey;
         const secretKey = qiniuConfig.secretKey;
         const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
@@ -57,11 +59,39 @@ class Utils {
                     reject(respErr);
                 } else {
                     resolved({
-                        'src': qiniuConfig.origin + '/' + respBody.key
+                        src: qiniuConfig.origin + '/' + respBody.key
                     });
                 }
             });
         });
+    }
+    static uploadCos() {
+        const cos = new COS({
+            SecretId: cosConfig.secretId, // 密钥id
+            SecretKey: cosConfig.secretKey // 密钥key
+        });
+        return {
+            putObject(buffer,key) {
+                return new Promise((resolve, reject) => {
+                    cos.putObject({
+                        Bucket: cosConfig.bucket, /* 必须 */
+                        Region: cosConfig.region, /* 必须 */
+                        Key: key, /* 必须 */
+                        Body: buffer /* 必须 */
+                    }, function (err, data) {
+                        console.log('err', err);
+                        console.log('data', data);
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        resolve({
+                            src: 'http://' + data.Location
+                        });
+                    });
+                });
+            }
+        };
     }
 }
 
