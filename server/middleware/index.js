@@ -53,9 +53,11 @@ const jwtVerify = (routes = []) => {
         const verifyRoutes = routes.filter(item => item.verify);
         const verifyPaths  = verifyRoutes.map(item => '/api' + item.path);
         if(verifyPaths.includes(originalUrl)) {
-            const  userInfo = await  verify(ctx);
+            const  userInfo = await  verify(ctx).catch(err => {
+                ctx.fail(err);
+            });
             if(userInfo) {
-                ctx.request.body.id = userInfo.id;
+                ctx.request.userInfo = userInfo;
                 await next();
             }else{
                 ctx.fail('无效token');

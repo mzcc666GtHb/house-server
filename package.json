@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async-validator": "^3.3.0",
     "bcryptjs": "^2.4.3",
     "cos-nodejs-sdk-v5": "^2.6.0",
     "jsonwebtoken": "^8.5.1",

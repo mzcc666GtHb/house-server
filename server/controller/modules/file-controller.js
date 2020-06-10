@@ -10,7 +10,8 @@ class FileController {
     try {
       // 前端必须以formData格式进行文件的传递
       const file = ctx.request.files.files; // 获取上传文件
-      console.log('id', ctx.request.body.id);
+      console.log('ctx.request.userInfo', ctx.request.userInfo);
+      const user_id = ctx.request.userInfo.id;
       if (file) {
         // 命名文件
         const fileName = v1();
@@ -25,9 +26,11 @@ class FileController {
         //上传到腾讯云存储
         const result = await Utils.uploadCos().putObject(reader, fileUrl);
         if (result) {
-          const data = await query('UPDATE user SET user_pic=? where id=?', [result.src, 29]);
+          const data = await query('UPDATE user SET user_pic=? where id=?', [result.src, user_id]);
           if (data.affectedRows === 1) {
             ctx.success(result,'上传成功!');
+          }else{
+            ctx.fail('上传失败');
           }
         } else {
           ctx.fail('上传失败');

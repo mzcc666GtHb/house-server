@@ -1,9 +1,7 @@
 import qiniu from 'qiniu';
 import COS from 'cos-nodejs-sdk-v5';
 import bcrypt from 'bcryptjs';
-import {qiniuConfig, jwtConfig, cosConfig} from '../config';
-import jwt from 'jsonwebtoken';
-
+import {qiniuConfig, cosConfig} from '../config';
 class Utils {
     /**
      * 加密 循环10次
@@ -65,6 +63,12 @@ class Utils {
             });
         });
     }
+
+    // eslint-disable-next-line valid-jsdoc
+    /**
+     * 上传腾讯云存储
+     * @return {Promise<unknown>|{putObject(*=, *=): Promise<unknown>}}
+     */
     static uploadCos() {
         const cos = new COS({
             SecretId: cosConfig.secretId, // 密钥id
@@ -78,9 +82,8 @@ class Utils {
                         Region: cosConfig.region, /* 必须 */
                         Key: key, /* 必须 */
                         Body: buffer /* 必须 */
-                    }, function (err, data) {
+                    }, (err, data) => {
                         console.log('err', err);
-                        console.log('data', data);
                         if (err) {
                             reject(err);
                             return;
